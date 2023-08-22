@@ -1,28 +1,38 @@
-const mongoose = require('mongoose')
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const mongoose = require("mongoose");
+const collegeModel = require("./collegeModel");
+const objectId = mongoose.Schema.Types.ObjectId
 
-const internSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    mobile: {
-        type: String,
-        // required: [true, 'User phone number required'],
-        //unique: [true, 'User with this phone number already exists'],
-        validate: {
-            validator: function (str) {
-                return /\d{10}/.test(str);
-            },
-            message: props => `${props.value} is not a valid phone number!`
+const internSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique:true,
+        },
+        mobile: {
+            type: String,
+            required: true,
+            unique:true,
+        },
+
+        collegeId: {
+            type: objectId,
+            ref:"collegeModel",
+            required:true,
+        },
+
+        isDeleted: {
+            type: Boolean,
+            default: false
         }
     },
-    collegeId: {
-        type: ObjectId,
-        ref: 'College'
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    }
-}, {timestamps: true})
+    { timestamps: true });
+
 
 module.exports = mongoose.model('Intern', internSchema)
+
+
